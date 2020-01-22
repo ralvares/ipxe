@@ -70,6 +70,8 @@ govc datastore.ls images
 guestinfo.ipxe[.<network device>].<setting name>[.<setting type>] = "<value>"
 ```
 
+### Create Demo Virtual Machine using Vmware GUI or use ansible to automate it :)
+
 ### Example of guest.info parameters:
 ```
 guestinfo.ipxe.hostname = "bootstrap"
@@ -101,5 +103,4 @@ govc vm.change -e="guestinfo.ipxe.disk=sda" -vm=ipxe-demo
 govc vm.change -e="guestinfo.ipxe.net_interface=ens192" -vm=ipxe-demo
 ```
 
-Create Demo Virtual Machine using Vmware GUI or use ansible to automate it :)
 Power UP the VM and have fun :)
