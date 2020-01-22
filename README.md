@@ -10,7 +10,7 @@ You probably deploy your OCP cluster through with pxe/dhcp or static ips with ma
 
 So, I want to show you a simple way to install through ligthweight 1Mb iso image :)
 
-This build option enables support for VMware GuestInfo settings.s
+This build option enables support for VMware GuestInfo settings.
 
 
 # Install Instructions
