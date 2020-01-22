@@ -43,11 +43,11 @@ make bin/ipxe.iso EMBED=vmware.ipxe
 ```
 
 
-## GOVC Installation
+## govc Installation
 ```
 curl -L https://github.com/vmware/govmomi/releases/download/v0.22.1/govc_linux_amd64.gz | gunzip > /usr/local/bin/govc && chmod +x /usr/local/bin/govc
 ```
-### Basic Connectivity
+### govc basic connectivity
 Export a set of environment variables so the CLI knows how to connect to vCenter:
 ```
 export GOVC_URL='vsphere.server.local
