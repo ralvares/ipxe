@@ -71,7 +71,7 @@ guestinfo.ipxe[.<network device>].<setting name>[.<setting type>] = "<value>"
 ```
 
 ### Example of guest.info parameters:
-
+```
 guestinfo.ipxe.hostname = "bootstrap"
 guestinfo.ipxe.ignition = "bootstrap.ign"
 guestinfo.ipxe.net0.ip = "192.168.122.15"
@@ -84,9 +84,9 @@ guestinfo.ipxe.initrd-installer = "rhcos-4.2.0-x86_64-installer-initramfs.img"
 guestinfo.ipxe.rhcos-image = "rhcos-4.2.0-x86_64-metal-bios.raw.gz"
 guestinfo.ipxe.disk = sda
 guestinfo.ipxe.net_interface = ens192
-  
+```
 ### Using govc
-
+```
 govc vm.change -e="guestinfo.ipxe.hostname=bootstrap" -vm=ipxe-demo
 govc vm.change -e="guestinfo.ipxe.ignition=bootstrap.ign" -vm=ipxe-demo
 govc vm.change -e="guestinfo.ipxe.net0.ip=192.168.122.15" -vm=ipxe-demo
@@ -99,8 +99,7 @@ govc vm.change -e="guestinfo.ipxe.initrd-installer=rhcos-4.2.0-x86_64-installer-
 govc vm.change -e="guestinfo.ipxe.rhcos-image=rhcos-4.2.0-x86_64-metal-bios.raw.gz" -vm=ipxe-demo
 govc vm.change -e="guestinfo.ipxe.disk=sda" -vm=ipxe-demo
 govc vm.change -e="guestinfo.ipxe.net_interface=ens192" -vm=ipxe-demo
-
-
+```
 
 Create Demo Virtual Machine using Vmware GUI or use ansible to automate it :)
 Power UP the VM and have fun :)
