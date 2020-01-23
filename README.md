@@ -73,7 +73,7 @@ guestinfo.ipxe[.<network device>].<setting name>[.<setting type>] = "<value>"
 
 ### Create Demo Virtual Machine using Vmware GUI or use ansible to automate it :)
 
-### Example of guest.info parameters:
+### Set guest.info parameters as follows:
 ```
 guestinfo.ipxe.hostname = "bootstrap"
 guestinfo.ipxe.ignition = "bootstrap.ign"
