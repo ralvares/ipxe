@@ -19,7 +19,7 @@ This build option enables support for VMware GuestInfo settings.
 
 The easiest way to start experimenting with iPXE is to use the pre-build:
 ```
-curl https://github.com/ralvares/ipxe/raw/master/ipxe.iso -o ipxe.iso
+curl https://github.com/ralvares/ipxe/releases/download/v0.1/ipxe.iso -o ipxe.iso
 ```
 
 Or you can build your own:
@@ -61,8 +61,7 @@ export GOVC_DATASTORE='datastore1'
 
 ### Upload the ipxe.iso to datastore
 ```
-govc datastore.mkdir OCP4
-govc datastore.upload bin/ipxe.iso OCP4/ipxe-rhcos.iso
+govc datastore.upload bin/ipxe.iso ipxe-rhcos.iso
 govc datastore.ls images
 ```
 
