@@ -1,19 +1,44 @@
 # Disclaimer
 
-This is not a supported method, Use it at your own please and risk!
+This (iPXE) is not a supported by Red Hat., Use it at your own please and risk! iPXE installation is only documented for [Bare metal installations](https://docs.openshift.com/container-platform/latest/installing/installing_bare_metal/installing-bare-metal.html#installation-user-infra-machines-pxe_installing-bare-metal).
 
 PS: This method works just with BIOS
 
 # When DHCP is not a option ? What to do ?
 
-You probably deploy your OCP cluster through with pxe/dhcp or static ips with manual interactions. DHCP is the most convenient way to deploy nodes in an automated Way. But what about having to remotely init a new environement, without DHCP at all ? Suppose that you have a OCP4 cluster that you have to deploy on VMWARE, but there is no DHCP environment due to security constraints.
+You probably deploy your OCP cluster through with pxe/dhcp or static ips with manual interactions. DHCP is the most convenient way to deploy nodes in an automated Way. But what about having to remotely init a new environement, without DHCP at all ? Suppose that you have a OCP4 cluster that you have to deploy on vSphere, but there is no DHCP environment due to security constraints.
 
 So, I want to show you a simple way to install through ligthweight 1Mb iso image :)
 
-This build option enables support for VMware GuestInfo settings.
+This build option enables support for vSphere GuestInfo settings.
 
 
 # Install Instructions
+
+## Create a iPXE template virtual machine
+
+Prerequisite: 
+ * Upload IPXE.iso to Datastore
+
+### Create an empty Virtual machine:
+ 1) New Virtual Machine... 
+ 2) Create a new Virtual machine
+    * ![Screenshot](images/02-new-virtual-machine.png) 
+ 3) Set Virtual machine name: `rhcos-4-ipxe` & select a location 
+    * ![Screenshot](images/03-vm-name-location.png)
+ 4) Select a compute resource
+ 5) Select storage
+ 6) Select compatibility - ESXi 6.7 and later
+ 7) Select a guest OS - Linux - Red Hat Enterprise Linux 8 (64-bit)
+    * ![Screenshot](images/07-select-a-guest-OS.png)
+ 8) **Customize hardware** - very important!
+    * ![Screenshot](images/08-1-cpu.png)
+    * ![Screenshot](images/08-1-ram-disk.png)
+    * ![Screenshot](images/08-2-boot-bios.png)
+    * ![Screenshot](images/08-3-diskuuid.png)
+    * ![Screenshot](images/08-4-lat-high.png)
+    * ![Screenshot](images/08-5-boot-from-ipxe.png)
+ 9) Ready to complete
 
 ## Bastion
 
@@ -70,7 +95,7 @@ govc datastore.ls images
 guestinfo.ipxe[.<network device>].<setting name>[.<setting type>] = "<value>"
 ```
 
-### Create Demo Virtual Machine using Vmware GUI or use ansible to automate it :)
+### Create Demo Virtual Machine using vCenter GUI or use ansible to automate it :)
 
 ### Set guest.info parameters as follows:
 ```
@@ -89,18 +114,20 @@ guestinfo.ipxe.net_interface = ens192
 ```
 ### Using govc
 ```
-govc vm.change -e="guestinfo.ipxe.hostname=bootstrap" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.ignition=bootstrap.ign" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.net0.ip=192.168.122.15" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.net0.netmask=255.255.255.0" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.net0.gateway=192.168.122.1" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.fileserver=http://192.168.122.1:8080" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.dns=192.168.122.1" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.kernel-installer=rhcos-4.2.0-x86_64-installer-kernel" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.initrd-installer=rhcos-4.2.0-x86_64-installer-initramfs.img" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.rhcos-image=rhcos-4.2.0-x86_64-metal-bios.raw.gz" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.disk=sda" -vm=ipxe-demo
-govc vm.change -e="guestinfo.ipxe.net_interface=ens192" -vm=ipxe-demo
+govc vm.change \
+    -e="guestinfo.ipxe.hostname=bootstrap" \
+    -e="guestinfo.ipxe.ignition=bootstrap.ign" \
+    -e="guestinfo.ipxe.net0.ip=192.168.122.15" \
+    -e="guestinfo.ipxe.net0.netmask=255.255.255.0" \
+    -e="guestinfo.ipxe.net0.gateway=192.168.122.1" \
+    -e="guestinfo.ipxe.fileserver=http://192.168.122.1:8080" \
+    -e="guestinfo.ipxe.dns=192.168.122.1" \
+    -e="guestinfo.ipxe.kernel-installer=rhcos-4.2.0-x86_64-installer-kernel" \
+    -e="guestinfo.ipxe.initrd-installer=rhcos-4.2.0-x86_64-installer-initramfs.img" \
+    -e="guestinfo.ipxe.rhcos-image=rhcos-4.2.0-x86_64-metal-bios.raw.gz" \
+    -e="guestinfo.ipxe.disk=sda" \
+    -e="guestinfo.ipxe.net_interface=ens192" \
+    -vm=/${GOVC_DATACENTER}/vm/folder/ipxe-demo
 ```
 
 Power UP the VM and have fun :)
